@@ -10,8 +10,14 @@ import retrofit2.http.Query
 interface OmbdApi {
 
     @GET("/")
-    fun getMoviesByName(@Query("s") query: String): Deferred<Response<OmbdMovieResponse>>
+    fun getMoviesByCoincidence(@Query("s") query: String): Deferred<Response<OmbdMovieResponse>>
+
+    @GET("/")
+    fun getPagedMoviesByCoincidence(@Query("page") page: Int, @Query("s") query: String): Deferred<Response<OmbdMovieResponse>>
 
     @GET("/")
     fun getMovieByTitle(@Query("t") query: String): Deferred<Response<Movie>>
+
+    @GET("/")
+    fun getMovieById(@Query("i") query: String): Deferred<Response<Movie>>
 }

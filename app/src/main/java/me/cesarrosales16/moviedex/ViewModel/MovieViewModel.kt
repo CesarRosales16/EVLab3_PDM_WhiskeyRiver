@@ -29,7 +29,7 @@ class MovieViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun fetchMovie(name: String){
         scope.launch {
-            val response=repository.retrieveMoviesByNameAsync(name).await()
+            val response=repository.retrieveMoviesByCoincidenceAsync(name).await()
             if(response.isSuccessful){
                 when(response.code()){
                     200->movieslist.postValue(response.body()?.Search?.toMutableList()?:arrayListOf(MoviePreview(Title = "Dummy 1"), MoviePreview(Title = "Dummy 2")))
@@ -44,7 +44,7 @@ class MovieViewModel(val app: Application) : AndroidViewModel(app) {
 
     fun fetchMovieByTitle(name: String){
         scope.launch {
-            val response=repository.retrieveMoviesByTitleAsync(name).await()
+            val response=repository.retrieveMovieByTitleAsync(name).await()
             if(response.isSuccessful) with(response){
                 when(this.code()){
                     200->movieResult.postValue(this.body())
