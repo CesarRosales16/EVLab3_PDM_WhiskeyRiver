@@ -27,4 +27,6 @@ class MovieRepository(private val movieDao: MovieDao, private val api: OmbdApi) 
     fun getAllfromRoomDB(): LiveData<List<Movie>> = movieDao.loadAllMovies()
 
     fun getMovieByName(name: String) = movieDao.searchMovieByName(name)
+
+    suspend fun nuke() = movieDao.nukeTable()
 }

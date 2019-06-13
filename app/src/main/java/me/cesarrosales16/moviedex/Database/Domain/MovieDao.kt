@@ -18,4 +18,7 @@ interface MovieDao {
 
     @Query("select * from Movie where Title like :name")
     fun searchMovieByName(name: String): LiveData<List<Movie>>
+
+    @Query("DELETE FROM Movie")
+    suspend fun nukeTable()
 }

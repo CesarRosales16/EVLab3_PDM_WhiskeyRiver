@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +33,8 @@ class MainActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.preview_add_movie)
-        viewManager = GridLayoutManager(this,3)
-        if(landscape_fragment!=null){
+        viewManager = GridLayoutManager(this, 3)
+        if (landscape_fragment != null) {
             mainContentFragment = MainContentFragment.newInstance(Movie())
             supportFragmentManager.beginTransaction().replace(R.id.landscape_fragment, mainContentFragment).commit()
             viewManager = LinearLayoutManager(this)
@@ -42,19 +43,23 @@ class MainActivity : AppCompatActivity(){
         val MovieViewModel = ViewModelProviders.of(this).get(MovieViewModel::class.java)
 
 
+        fun clearView(){
+            MovieViewModel.nuke()
+        }
         val recyclerView = rv_preview
         val moviesPreviewAdapter = RVMovieAdapter(movies = AppConstants.emptymovies,
-            clickListener = { movie:Movie ->
-                if (landscape_fragment!=null){
+            clickListener = { movie: Movie ->
+
+                if (landscape_fragment != null) {
                     MovieViewModel.fetchMovieByTitle(movie.Title)
-                    MovieViewModel.getMovieResult().observe(this, Observer {resultMovie ->
+                    MovieViewModel.getMovieResult().observe(this, Observer { resultMovie ->
                         MovieViewModel.insert(resultMovie)
                         mainContentFragment = MainContentFragment.newInstance(resultMovie)
                     })
-                    supportFragmentManager.beginTransaction().replace(R.id.landscape_fragment, mainContentFragment).commit()
-                }
-                else{
-                    startActivity(Intent(this, ContentViewer::class.java).putExtra("TITLE",movie.Title))
+                    supportFragmentManager.beginTransaction().replace(R.id.landscape_fragment, mainContentFragment)
+                        .commit()
+                } else {
+                    startActivity(Intent(this, ContentViewer::class.java).putExtra("TITLE", movie.Title))
                 }
 
             })
@@ -72,32 +77,28 @@ class MainActivity : AppCompatActivity(){
 
 
         bt_search.setOnClickListener {
+            clearView()
             val movieNameQuery = et_search.text.toString()
             if (movieNameQuery.isNotEmpty() && movieNameQuery.isNotBlank()) {
                 MovieViewModel.fetchMovie(movieNameQuery)
                 MovieViewModel.getMovieListVM().observe(this, Observer { result ->
 
-                    for (movie in result){
+                    for (movie in result) {
                         MovieViewModel.fetchMovieByTitle(movie.Title)
-                        MovieViewModel.getMovieResult().observe(this, Observer {resultMovie ->
+                        MovieViewModel.getMovieResult().observe(this, Observer { resultMovie ->
                             MovieViewModel.insert(resultMovie)
                         })
                     }
 
-               })
+                })
             }
 
         }
 
 
-
-
     }
 
-    fun clearView(et: EditText, adapter: RVPreviewAdapter){
-        et.text.clear()
-        adapter.changeDataSet(AppConstants.emptymoviespreview)
-    }
+
 
 
 

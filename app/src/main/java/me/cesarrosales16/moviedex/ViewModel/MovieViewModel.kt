@@ -67,5 +67,7 @@ class MovieViewModel(val app: Application) : AndroidViewModel(app) {
     fun getMovieByName(name: String): LiveData<List<Movie>> = repository.getMovieByName(name)
 
     //fun cancelAllRequests() = Dispatchers.IO.cancel()
-
+     fun nuke(){
+        scope.launch { repository.nuke() }
+    }
 }
