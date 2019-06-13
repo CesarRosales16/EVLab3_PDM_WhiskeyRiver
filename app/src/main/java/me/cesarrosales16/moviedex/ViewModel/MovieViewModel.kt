@@ -23,11 +23,12 @@ class MovieViewModel(val app: Application) : AndroidViewModel(app) {
 
     private val scope = CoroutineScope(Dispatchers.IO)
 
-    private val movieslist = MutableLiveData<MutableList<MoviePreview>>()
+
 
     private val movieResult = MutableLiveData<Movie>()
 
-    fun fetchMovie(name: String){
+    fun fetchMovie(name: String):LiveData<MutableList<MoviePreview>> {
+        var movieslist = MutableLiveData<MutableList<MoviePreview>>()
         scope.launch {
             val response=repository.retrieveMoviesByCoincidenceAsync(name).await()
             if(response.isSuccessful){
@@ -38,9 +39,10 @@ class MovieViewModel(val app: Application) : AndroidViewModel(app) {
                 Toast.makeText(app, "Ocurrio un error", Toast.LENGTH_LONG).show()
             }
         }
+        return movieslist
     }
 
-    fun getMovieListVM(): LiveData<MutableList<MoviePreview>> = movieslist
+    //fun getMovieListVM(): = movieslist
 
     fun fetchMovieByTitle(name: String){
         scope.launch {

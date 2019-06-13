@@ -80,8 +80,7 @@ class MainActivity : AppCompatActivity(){
             clearView()
             val movieNameQuery = et_search.text.toString()
             if (movieNameQuery.isNotEmpty() && movieNameQuery.isNotBlank()) {
-                MovieViewModel.fetchMovie(movieNameQuery)
-                MovieViewModel.getMovieListVM().observe(this, Observer { result ->
+                MovieViewModel.fetchMovie(movieNameQuery).observe(this, Observer { result ->
 
                     for (movie in result) {
                         MovieViewModel.fetchMovieByTitle(movie.Title)
