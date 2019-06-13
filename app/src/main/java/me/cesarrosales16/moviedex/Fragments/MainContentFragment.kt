@@ -40,8 +40,13 @@ class MainContentFragment: Fragment() {
             .load(data.Poster)
             .placeholder(R.drawable.ic_launcher_background)
             .into(view.app_bar_image_viewer)
+        Glide.with(this)
+            .load(data.Poster)
+            .placeholder(R.drawable.ic_launcher_background)
+            .into(view.img_poster_viewer)
 
         view.collapsingtoolbarviewer.title = data.Title
+        view.tittle_viewer.text=data.Title
         view.plot_viewer.text = data.Plot
         view.director_viewer.text = data.Director
         view.actors_viewer.text = data.Actors

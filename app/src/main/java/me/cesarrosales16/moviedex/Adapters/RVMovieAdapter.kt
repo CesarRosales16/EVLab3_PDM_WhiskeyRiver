@@ -32,9 +32,6 @@ class RVMovieAdapter(var movies: List<Movie>, val clickListener: (Movie) -> Unit
                 .placeholder(R.drawable.ic_launcher_background)
                 .into(movie_image_cv)
             movie_title_cv.text = movie.Title
-            movie_plot_cv.text = movie.Plot
-            movie_rate_cv.text = movie.imdbRating
-            movie_runtime_cv.text = movie.Runtime
             this.setOnClickListener { clickListener(movie) }
         }
     }
